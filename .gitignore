@@ -1,0 +1,23 @@
+# Gradle
+.gradle/
+**/build/
+**/out/
+
+# IntelliJ / Kotlin / VS Code
+.idea/
+*.iml
+.vscode/
+
+# Node / JS (if present)
+node_modules/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Kotlin/JS caches
+**/.kotlin/
+**/.cache/

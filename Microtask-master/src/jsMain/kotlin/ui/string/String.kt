@@ -1,0 +1,16 @@
+package ui.string
+
+const val appTitle = "Micro-tasks Tool"
+const val question = "Question"
+const val invalidTokenError = "Invalid token, Please try again"
+const val loadingPleaseWait = "Loading, please wait...."
+const val questionDetails = "Question Details"
+const val resume = "Resume"
+const val pause = "Pause"
+const val loadingWorker = "Loading workers, please wait..."
+const val loadingLinks = "Loading links, please wait..."
+const val noData = "No data"
+const val loadingQuestions = "Loading questions, please wait..."
+const val yes = "Yes"
+const val no = "No"
+const val fileUploadedSuccessfully = "File has been uploaded successfully"
