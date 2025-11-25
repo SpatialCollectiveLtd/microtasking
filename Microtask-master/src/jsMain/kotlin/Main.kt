@@ -1,6 +1,6 @@
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import app.softwork.routingcompose.HashRouter
+import app.softwork.routingcompose.BrowserRouter
 import app.softwork.routingcompose.Router
 import org.jetbrains.compose.web.renderComposable
 import repository.ImageRepository
@@ -25,7 +25,7 @@ fun main() {
     val imageRepository = ImageRepository()
 
     renderComposable(rootElementId = "root") {
-        HashRouter("/") {
+        BrowserRouter("/") {
             val router = Router.current
             val isUserSignedIn by userRepository.isUserSignedIn.collectAsState()
 
@@ -83,9 +83,9 @@ fun main() {
 private fun redirectToSignInIfNotSignIn(isUserSignedIn: Boolean, isAdminRoute: Boolean = false) {
     if (!isUserSignedIn) {
         if (isAdminRoute) {
-            js("window.location.replace(baseUrl+'/#/admin/sign-in');")
+            js("window.location.replace(baseUrl+'/admin/sign-in');")
         } else {
-            js("window.location.replace(baseUrl+'/#/sign-in');")
+            js("window.location.replace(baseUrl+'/sign-in');")
         }
     }
 }

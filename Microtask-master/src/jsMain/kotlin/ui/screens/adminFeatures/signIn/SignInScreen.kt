@@ -18,7 +18,7 @@ fun adminSignIn(userRepository: UserRepository, router: Router) {
     Div({ classes("container") }) {
         Div({ classes("row") }) {
             Div({ classes("col-md-12", "col-lg-12", "col-sm-12", "col-xl-12", "mt-5") }) {
-                Img("icons/logo.png") {
+                Img("/icons/logo.png") {
                     classes("rounded", "mx-auto", "d-block")
                 }
             }
@@ -34,7 +34,7 @@ fun adminSignIn(userRepository: UserRepository, router: Router) {
             Div({ classes("col-md-4", "col-lg-4", "col-sm-6", "col-xl-4") }) {
                 Div(attrs = {
                     classes("g-signin2", "col-12", "d-flex", "justify-content-center")
-                    attr("data-client_id", "876038700640-9md13do96fvdkc98vt8jelbbqnv8nsci.apps.googleusercontent.com")
+                    attr("data-client_id", "34768107959-ad0p0iecdct89f4m401vsq4jo9u4afl5.apps.googleusercontent.com")
                     attr("data-callback", "handleCredentialResponse")
                     id("g_id_onload")
                 })

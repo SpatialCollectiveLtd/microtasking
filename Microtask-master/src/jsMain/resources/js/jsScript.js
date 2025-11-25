@@ -1,5 +1,5 @@
-const baseUrl='https://microtasktool.spatialcollective.com';
-const apiURL='https://microtasktool.spatialcollective.com';
+const baseUrl='https://micro.spatialcollective.co.ke';
+const apiURL='https://api.spatialcollective.co.ke';
 function saveQuestion(response){
     localStorage.setItem("questionIdKey", response.id);
     localStorage.setItem("questionNameKey", response.name);
@@ -18,7 +18,7 @@ function saveError(error){
 }
 
 function handleCredentialResponse(response) {
-     window.location.replace(baseUrl+'/#/admin/signedIn?token='+response.credential);
+     window.location.replace(baseUrl+'/admin/signedIn?token='+response.credential);
 }
 
 function getItem(data,key){
