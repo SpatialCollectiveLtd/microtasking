@@ -36,7 +36,7 @@ fun headerComponent(userRepository: UserRepository, router: Router) {
                 Img(attrs = {
                     attr("width", "70")
                     classes("align-text-center")
-                }, src = "icons/logo.png", alt = appTitle)
+                }, src = "/icons/logo.png", alt = appTitle)
                 P(attrs = { classes("d-none", "d-sm-block", "m-auto") }) { Text(appTitle) }
             }
             Div({ classes("d-flex") }) {

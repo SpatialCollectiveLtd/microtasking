@@ -28,7 +28,7 @@ fun signedInScreen(userRepository: UserRepository, parameters: Parameters?, rout
             Resource.Loading -> loadingView(loadingPleaseWait)
             is Resource.Success<*> -> {
                 userRepository.saveUser(loadingResource.getData() as UserModel)
-                js("window.location.replace(baseUrl+'/#/admin/home');")
+                js("window.location.replace(baseUrl+'/admin/home');")
                 Unit
             }
             Resource.None -> {}

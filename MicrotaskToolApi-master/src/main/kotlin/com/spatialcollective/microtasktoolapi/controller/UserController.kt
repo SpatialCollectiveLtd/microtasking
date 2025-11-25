@@ -3,7 +3,6 @@ package com.spatialcollective.microtasktoolapi.controller
 
 import com.spatialcollective.microtasktoolapi.exception.user.UserDontHavePermissionException
 import com.spatialcollective.microtasktoolapi.exception.user.YourAccountIsUnauthorizedException
-import com.spatialcollective.microtasktoolapi.model.UserRole
 import com.spatialcollective.microtasktoolapi.model.entity.UserEntity
 import com.spatialcollective.microtasktoolapi.model.entity.isAdmin
 import com.spatialcollective.microtasktoolapi.model.toUserEntity
@@ -52,23 +51,6 @@ class UserController(@Autowired val userRepository: UserRepository) {
         } else {
             throw RuntimeException("Invalid token")
         }
-    }
-
-    // Temporary endpoint to create admin user directly
-    @PostMapping(path = ["/user/create-admin"])
-    fun createAdminUser(
-        @RequestParam("id") id: String,
-        @RequestParam("fullName") fullName: String,
-        @RequestParam("email") email: String
-    ): UserEntity {
-        val adminUser = UserEntity(
-            id = id,
-            fullName = fullName,
-            email = email,
-            picture = "",
-            role = UserRole.Admin.name
-        )
-        return userRepository.save(adminUser)
     }
 }
 

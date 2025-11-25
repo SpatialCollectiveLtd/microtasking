@@ -1,5 +1,5 @@
-const baseUrl='http://localhost:8080';
-const apiURL='http://localhost:8080';
+const baseUrl='https://microtasktool.spatialcollective.com';
+const apiURL='https://microtasktool.spatialcollective.com';
 function saveQuestion(response){
     localStorage.setItem("questionIdKey", response.id);
     localStorage.setItem("questionNameKey", response.name);

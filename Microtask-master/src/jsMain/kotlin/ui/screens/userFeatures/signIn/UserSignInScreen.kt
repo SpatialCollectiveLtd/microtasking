@@ -32,7 +32,7 @@ fun userSignInScreen(
     Div({ classes("container") }) {
         Div({ classes("row") }) {
             Div({ classes("col-md-12", "col-lg-12", "col-sm-12", "col-xl-12", "mt-5") }) {
-                Img("icons/logo.png") {
+                Img("/icons/logo.png") {
                     classes("rounded", "mx-auto", "d-block")
                 }
             }
@@ -99,5 +99,5 @@ fun userSignInScreen(
 
 @Composable
 fun navigateToMyTask() {
-    js("window.location.replace(baseUrl+'/#/my-task');")
+    js("window.location.replace(baseUrl+'/my-task');")
 }

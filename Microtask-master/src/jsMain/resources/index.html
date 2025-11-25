@@ -19,20 +19,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.10.5/viewer.min.js"
             integrity="sha512-i5q29evO2Z4FHGCO+d5VLrwgre/l+vaud5qsVqQbPXvHmD9obORDrPIGFpP2+ep+HY+z41kAmVFRHqQAjSROmA=="
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <title>Microtask Tool</title>
+    <title>Microtasking Tool</title>
 </head>
 <body>
-<script src="js/jsScript.js"></script>
+<script src="/js/jsScript.js"></script>
 <div id="root"></div>
-<script src="Microtask.js"></script>
+<script src="/Microtask.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", function(){
-  	var toastElementList = [].slice.call(document.querySelectorAll(".toast"));
-	var toastList = toastElementList.map(function(element){
-  		return new bootstrap.Toast(element, {
-        	autohide: false
+        var toastElementList = [].slice.call(document.querySelectorAll(".toast"));
+        var toastList = toastElementList.map(function(element){
+                return new bootstrap.Toast(element, {
+                autohide: false
         });
-	});
+        });
 });
 
 </script>

@@ -19,6 +19,8 @@ afterEvaluate {
     rootProject.extensions.configure<org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension> {
         versions.webpackDevServer.version = "4.9.3"
         versions.webpackCli.version = "4.10.0"
+        nodeVersion = "20.19.5"
+        nodeDownloadBaseUrl = "https://nodejs.org/dist"
     }
 }
 
