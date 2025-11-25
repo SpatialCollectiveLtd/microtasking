@@ -40,6 +40,15 @@ dependencies {
     implementation("com.github.doyaaaaaken:kotlin-csv-jvm:1.2.0")
     implementation("io.arrow-kt:arrow-core:1.1.2")
     implementation("io.github.nefilim.kjwt:kjwt-core:0.5.3")
+    
+    // DPW Integration Dependencies
+    implementation("com.github.oshi:oshi-core:6.4.0") // System monitoring
+    implementation("org.springframework.boot:spring-boot-starter-mail") // Email alerts
+    implementation("org.springdoc:springdoc-openapi-ui:1.6.14") // API documentation
+    implementation("org.springframework.boot:spring-boot-starter-security") // API key authentication
+    implementation("org.apache.poi:poi:5.2.3") // Excel export
+    implementation("org.apache.poi:poi-ooxml:5.2.3") // Excel export
+    
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
