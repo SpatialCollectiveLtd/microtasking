@@ -33,11 +33,10 @@ class ActivityLogService {
             val log = ActivityLogEntity(
                 action = action,
                 userId = userId,
-                details = details,
                 metadata = metadataJson,
-                ipAddress = ipAddress,
-                createdAt = LocalDateTime.now()
+                ipAddress = ipAddress
             )
+            log.timestamp = LocalDateTime.now()
             
             activityLogRepository.save(log)
             logger.debug("Activity logged: $action by $userId")
@@ -165,7 +164,7 @@ class ActivityLogService {
      */
     fun getUserActivity(userId: String, days: Int = 30): List<ActivityLogEntity> {
         val since = LocalDateTime.now().minusDays(days.toLong())
-        return activityLogRepository.findByUserIdAndCreatedAtAfterOrderByCreatedAtDesc(userId, since)
+        return activityLogRepository.findByUserIdAndTimestampAfterOrderByTimestampDesc(userId, since)
     }
 
     /**
@@ -173,14 +172,14 @@ class ActivityLogService {
      */
     fun getActionActivity(action: String, days: Int = 30): List<ActivityLogEntity> {
         val since = LocalDateTime.now().minusDays(days.toLong())
-        return activityLogRepository.findByActionAndCreatedAtAfterOrderByCreatedAtDesc(action, since)
+        return activityLogRepository.findByActionAndTimestampAfterOrderByTimestampDesc(action, since)
     }
 
     /**
      * Get recent activity logs
      */
     fun getRecentActivity(limit: Int = 100): List<ActivityLogEntity> {
-        return activityLogRepository.findTop100ByOrderByCreatedAtDesc()
+        return activityLogRepository.findTop100ByOrderByTimestampDesc()
     }
 
     /**
@@ -188,9 +187,9 @@ class ActivityLogService {
      */
     fun getActivityStatistics(days: Int = 7): Map<String, Any> {
         val since = LocalDateTime.now().minusDays(days.toLong())
-        val logs = activityLogRepository.findByCreatedAtAfterOrderByCreatedAtDesc(since)
+        val logs = activityLogRepository.findByTimestampAfterOrderByTimestampDesc(since)
         
-        val actionCounts = logs.groupingBy { it.action }.eachCount()
+        val actionCounts = logs.groupingBy { it.action ?: "UNKNOWN" }.eachCount()
         val userCounts = logs.groupingBy { it.userId ?: "UNKNOWN" }.eachCount()
         
         return mapOf(

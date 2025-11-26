@@ -52,7 +52,7 @@ class PaymentCalculationService(
         val allAnswers = answerRepository.findByQuestionId(questionId)
         val workerAnswers = allAnswers.filter { 
             it.workerUniqueId == workerId && 
-            it.createdDate?.toLocalDate() == date 
+            it.createdAt?.toInstant()?.atZone(java.time.ZoneId.systemDefault())?.toLocalDate() == date 
         }
         
         if (workerAnswers.isEmpty()) {
@@ -170,7 +170,7 @@ class PaymentCalculationService(
         
         // Get all answers for this question on this date
         val allAnswers = answerRepository.findByQuestionId(questionId)
-        val dateAnswers = allAnswers.filter { it.createdDate?.toLocalDate() == date }
+        val dateAnswers = allAnswers.filter { it.createdAt?.toInstant()?.atZone(java.time.ZoneId.systemDefault())?.toLocalDate() == date }
         
         // Group by worker
         val answersByWorker = dateAnswers.groupBy { it.workerUniqueId }

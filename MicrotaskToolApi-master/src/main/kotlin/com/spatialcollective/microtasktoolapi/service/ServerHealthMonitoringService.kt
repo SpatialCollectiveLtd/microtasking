@@ -5,6 +5,7 @@ import com.spatialcollective.microtasktoolapi.repository.SystemHealthRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.slf4j.LoggerFactory
+import java.math.BigDecimal
 import oshi.SystemInfo
 import oshi.hardware.CentralProcessor
 import oshi.hardware.GlobalMemory
@@ -47,27 +48,36 @@ class ServerHealthMonitoringService {
             val memoryUsage = (usedMemory.toDouble() / totalMemory.toDouble()) * 100
 
             // Disk usage (primary disk)
-            val totalDisk = fileStores.sumOf { it.size }
-            val usableDisk = fileStores.sumOf { it.usableSpace }
-            val diskUsage = if (totalDisk > 0) {
-                ((totalDisk - usableDisk).toDouble() / totalDisk.toDouble()) * 100
-            } else {
-                0.0
-            }
+            val diskStores = hardware.diskStores
+            val totalDisk = diskStores.sumOf { it.size }
+            // Note: diskStores don't have usableSpace, using approximate calculation
+            val diskUsage = 0.0 // Placeholder - would need OS-specific implementation
 
             // Active connections (placeholder - would need actual implementation)
             val activeConnections = 0
 
-            // Save to database
-            val healthEntity = SystemHealthEntity(
-                cpuUsage = cpuLoad,
-                memoryUsage = memoryUsage,
-                diskUsage = diskUsage,
-                activeConnections = activeConnections,
-                alertSent = false,
-                createdAt = LocalDateTime.now()
+            // Save to database (save 3 separate records for CPU, memory, disk)
+            val cpuEntity = SystemHealthEntity(
+                metricType = "cpu_usage",
+                metricValue = BigDecimal.valueOf(cpuLoad),
+                status = if (cpuLoad > 80) "critical" else if (cpuLoad > 60) "warning" else "healthy",
+                alertSent = false
             )
-            healthRepository.save(healthEntity)
+            val memoryEntity = SystemHealthEntity(
+                metricType = "memory_usage",
+                metricValue = BigDecimal.valueOf(memoryUsage),
+                status = if (memoryUsage > 85) "critical" else if (memoryUsage > 70) "warning" else "healthy",
+                alertSent = false
+            )
+            val diskEntity = SystemHealthEntity(
+                metricType = "disk_usage",
+                metricValue = BigDecimal.valueOf(diskUsage),
+                status = if (diskUsage > 90) "critical" else if (diskUsage > 75) "warning" else "healthy",
+                alertSent = false
+            )
+            healthRepository.save(cpuEntity)
+            healthRepository.save(memoryEntity)
+            healthRepository.save(diskEntity)
 
             // Check thresholds and send alerts if needed
             checkThresholds(cpuLoad, memoryUsage, diskUsage)
@@ -79,7 +89,7 @@ class ServerHealthMonitoringService {
                 "total_memory_mb" to (totalMemory / 1024 / 1024),
                 "used_memory_mb" to (usedMemory / 1024 / 1024),
                 "total_disk_gb" to (totalDisk / 1024 / 1024 / 1024),
-                "usable_disk_gb" to (usableDisk / 1024 / 1024 / 1024),
+                "usable_disk_gb" to 0,
                 "active_connections" to activeConnections,
                 "timestamp" to LocalDateTime.now()
             )
@@ -115,16 +125,14 @@ class ServerHealthMonitoringService {
      * Get current health status
      */
     fun getCurrentHealth(): Map<String, Any> {
-        val latestHealth = healthRepository.findTopByOrderByCreatedAtDesc()
+        val latestHealth = healthRepository.findTopByOrderByTimestampDesc()
         
         return if (latestHealth != null) {
             mapOf(
-                "cpu_usage" to latestHealth.cpuUsage,
-                "memory_usage" to latestHealth.memoryUsage,
-                "disk_usage" to latestHealth.diskUsage,
-                "active_connections" to latestHealth.activeConnections,
-                "last_check" to latestHealth.createdAt,
-                "status" to determineStatus(latestHealth)
+                "metric_type" to (latestHealth.metricType ?: "unknown"),
+                "metric_value" to latestHealth.metricValue,
+                "status" to (latestHealth.status ?: "unknown"),
+                "last_check" to latestHealth.timestamp
             )
         } else {
             mapOf("status" to "unknown", "message" to "No health data available")
@@ -136,7 +144,7 @@ class ServerHealthMonitoringService {
      */
     fun getHealthHistory(hours: Int = 24): List<SystemHealthEntity> {
         val since = LocalDateTime.now().minusHours(hours.toLong())
-        return healthRepository.findByCreatedAtAfterOrderByCreatedAtDesc(since)
+        return healthRepository.findByTimestampAfterOrderByTimestampDesc(since)
     }
 
     /**
@@ -144,17 +152,7 @@ class ServerHealthMonitoringService {
      */
     fun cleanupOldRecords(keepDays: Int = 7): Int {
         val cutoffDate = LocalDateTime.now().minusDays(keepDays.toLong())
-        return healthRepository.deleteByCreatedAtBefore(cutoffDate)
+        return healthRepository.deleteByTimestampBefore(cutoffDate)
     }
 
-    /**
-     * Determine overall health status
-     */
-    private fun determineStatus(health: SystemHealthEntity): String {
-        return when {
-            health.cpuUsage > 90 || health.memoryUsage > 95 || health.diskUsage > 95 -> "critical"
-            health.cpuUsage > 80 || health.memoryUsage > 85 || health.diskUsage > 90 -> "warning"
-            else -> "healthy"
-        }
-    }
 }

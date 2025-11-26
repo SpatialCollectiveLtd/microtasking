@@ -29,4 +29,12 @@ interface ActivityLogRepository : JpaRepository<ActivityLogEntity, Long> {
     
     @Query("SELECT COUNT(a) FROM activity_log a WHERE a.action = :action AND a.timestamp >= :since")
     fun countByActionSince(@Param("action") action: String, @Param("since") since: LocalDateTime): Long
+    
+    fun findByUserIdAndTimestampAfterOrderByTimestampDesc(userId: String, since: LocalDateTime): List<ActivityLogEntity>
+    
+    fun findByActionAndTimestampAfterOrderByTimestampDesc(action: String, since: LocalDateTime): List<ActivityLogEntity>
+    
+    fun findTop100ByOrderByTimestampDesc(): List<ActivityLogEntity>
+    
+    fun findByTimestampAfterOrderByTimestampDesc(since: LocalDateTime): List<ActivityLogEntity>
 }

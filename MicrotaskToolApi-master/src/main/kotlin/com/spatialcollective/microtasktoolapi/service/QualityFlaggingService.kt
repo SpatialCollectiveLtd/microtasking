@@ -252,4 +252,44 @@ class QualityFlaggingService(
             )
         )
     }
+
+    /**
+     * Get quality flags with filtering
+     */
+    fun getQualityFlags(
+        workerId: String?,
+        questionId: Long?,
+        severity: String?,
+        resolved: Boolean?
+    ): Map<String, Any> {
+        val flags = when {
+            workerId != null -> getWorkerFlags(workerId, resolved)
+            else -> getUnresolvedFlags(questionId, severity)
+        }
+        
+        val stats = getFlagStatistics(questionId)
+        
+        return mapOf(
+            "flags" to flags.map { flag ->
+                mapOf(
+                    "flag_id" to flag.id,
+                    "worker_unique_id" to flag.workerUniqueId,
+                    "question_id" to flag.questionId,
+                    "flag_type" to flag.flagType,
+                    "severity" to flag.severity,
+                    "description" to flag.description,
+                    "resolved" to flag.resolved,
+                    "resolved_by" to flag.resolvedBy
+                )
+            },
+            "statistics" to stats
+        )
+    }
+    
+    /**
+     * Get quality statistics
+     */
+    fun getQualityStatistics(questionId: Long?): Map<String, Any> {
+        return getFlagStatistics(questionId)
+    }
 }

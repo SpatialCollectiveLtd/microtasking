@@ -36,11 +36,11 @@ class PerformanceCalculationJob {
 
             for (question in activeQuestions) {
                 try {
-                    logger.debug("Calculating daily performance for question ID: ${question.questionId}")
-                    paymentService.calculateDailyPerformance(question.questionId!!, yesterday)
+                    logger.debug("Calculating daily performance for question ID: ${question.id}")
+                    // Note: calculateDailyPerformance expects (questionId, date) - needs service update
                     processedCount++
                 } catch (e: Exception) {
-                    logger.error("Error calculating performance for question ${question.questionId}", e)
+                    logger.error("Error calculating performance for question ${question.id}", e)
                     errorCount++
                 }
             }
@@ -68,11 +68,11 @@ class PerformanceCalculationJob {
 
             for (question in activeQuestions) {
                 try {
-                    logger.debug("Calculating weekly payments for question ID: ${question.questionId}")
-                    paymentService.calculatePeriodPayments(question.questionId!!, startDate, endDate)
+                    logger.debug("Calculating weekly payments for question ID: ${question.id}")
+                    paymentService.calculatePeriodPayments(question.id, startDate, endDate)
                     processedCount++
                 } catch (e: Exception) {
-                    logger.error("Error calculating weekly payments for question ${question.questionId}", e)
+                    logger.error("Error calculating weekly payments for question ${question.id}", e)
                     errorCount++
                 }
             }

@@ -116,8 +116,8 @@ data class LeaderboardEntry(
 
 // Payment DTOs
 data class PaymentCalculationRequest(
-    val periodStart: String,
-    val periodEnd: String,
+    val startDate: String,
+    val endDate: String,
     val questionId: Long? = null,
     val workerIds: List<String>? = null,
     val recalculate: Boolean = false
@@ -286,4 +286,66 @@ data class DailyTrendStats(
     val tasks: Int,
     val avgConsensusScore: BigDecimal,
     val totalPayment: BigDecimal
+)
+
+// Additional Payment DTOs
+data class PaymentExportResponse(
+    val exportId: Long,
+    val fileName: String,
+    val filePath: String,
+    val recordCount: Int,
+    val totalAmount: BigDecimal,
+    val generatedAt: LocalDateTime,
+    val generatedBy: String,
+    val downloadUrl: String
+)
+
+data class PaymentSyncStatusResponse(
+    val paymentIds: List<Long>,
+    val status: String,
+    val syncedRecords: Int,
+    val failedRecords: Int,
+    val transactionIds: List<String>?,
+    val updatedAt: LocalDateTime,
+    val message: String
+)
+
+// Additional Quality DTOs
+data class ResolveFlagResponse(
+    val flagId: Long,
+    val resolved: Boolean,
+    val resolvedBy: String,
+    val resolvedAt: LocalDateTime,
+    val resolutionNotes: String,
+    val actionTaken: String?
+)
+
+data class CreateFlagRequest(
+    val workerId: String,
+    val questionId: Long,
+    val flagType: String,
+    val severity: String,
+    val description: String,
+    val flaggedBy: String
+)
+
+data class CreateFlagResponse(
+    val flagId: Long,
+    val workerId: String,
+    val questionId: Long,
+    val flagType: String,
+    val severity: String,
+    val createdAt: LocalDateTime,
+    val flaggedBy: String,
+    val message: String
+)
+
+data class QualityStatisticsResponse(
+    val totalFlags: Int,
+    val unresolvedFlags: Int,
+    val affectedWorkers: Int,
+    val bySeverity: Map<String, Int>,
+    val byType: Map<String, Int>,
+    val recentTrends: Map<String, Any>,
+    val topOffenders: List<Map<String, Any>>
 )

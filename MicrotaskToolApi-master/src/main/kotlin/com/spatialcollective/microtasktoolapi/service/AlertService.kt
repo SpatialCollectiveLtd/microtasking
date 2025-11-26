@@ -55,7 +55,7 @@ class AlertService {
                 val mailMessage = SimpleMailMessage()
                 mailMessage.setFrom(fromEmail)
                 mailMessage.setTo(*toEmails.toTypedArray())
-                mailMessage.subject = "[$priority] Microtasking Platform Alert: $subject"
+                mailMessage.subject = "[" + priority + "] Microtasking Platform Alert: " + subject
                 mailMessage.text = """
                     |Alert Details:
                     |-------------

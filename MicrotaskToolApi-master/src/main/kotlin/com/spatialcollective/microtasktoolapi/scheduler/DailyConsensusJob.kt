@@ -35,11 +35,11 @@ class DailyConsensusJob {
 
             for (question in activeQuestions) {
                 try {
-                    logger.debug("Calculating consensus for question ID: ${question.questionId}")
-                    consensusService.calculateConsensusForQuestion(question.questionId!!)
+                    logger.debug("Calculating consensus for question ID: ${question.id}")
+                    consensusService.calculateConsensusForQuestion(question.id)
                     processedCount++
                 } catch (e: Exception) {
-                    logger.error("Error calculating consensus for question ${question.questionId}", e)
+                    logger.error("Error calculating consensus for question ${question.id}", e)
                     errorCount++
                 }
             }

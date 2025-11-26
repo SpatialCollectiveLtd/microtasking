@@ -36,17 +36,17 @@ class QualityCheckJob {
             for (question in activeQuestions) {
                 try {
                     // Check for low performers (3 consecutive days < 70%)
-                    logger.debug("Checking low performers for question ID: ${question.questionId}")
-                    val lowPerformers = qualityService.flagLowPerformers(question.questionId!!)
+                    logger.debug("Checking low performers for question ID: ${question.id}")
+                    val lowPerformers = qualityService.flagLowPerformers(question.id)
                     lowPerformerCount += lowPerformers.size
 
                     // Check for anomalous speed patterns
-                    logger.debug("Checking anomalous speed for question ID: ${question.questionId}")
-                    val anomalies = qualityService.flagAnomalousSpeed(question.questionId!!)
+                    logger.debug("Checking anomalous speed for question ID: ${question.id}")
+                    val anomalies = qualityService.flagAnomalousSpeed(question.id)
                     anomalyCount += anomalies.size
 
                 } catch (e: Exception) {
-                    logger.error("Error running quality checks for question ${question.questionId}", e)
+                    logger.error("Error running quality checks for question ${question.id}", e)
                     errorCount++
                 }
             }
