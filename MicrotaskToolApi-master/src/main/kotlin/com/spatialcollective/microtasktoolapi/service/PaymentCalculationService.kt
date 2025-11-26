@@ -289,10 +289,10 @@ class PaymentCalculationService(
             "total_bonuses" to totalBonuses,
             "total_payment" to totalPayment,
             "by_tier" to mapOf(
-                "excellent" to byTier["excellent"]?.size ?: 0,
-                "good" to byTier["good"]?.size ?: 0,
-                "fair" to byTier["fair"]?.size ?: 0,
-                "poor" to byTier["poor"]?.size ?: 0
+                Pair("excellent", byTier["excellent"]?.size ?: 0),
+                Pair("good", byTier["good"]?.size ?: 0),
+                Pair("fair", byTier["fair"]?.size ?: 0),
+                Pair("poor", byTier["poor"]?.size ?: 0)
             )
         )
     }

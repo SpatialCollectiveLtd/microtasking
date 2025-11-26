@@ -124,18 +124,24 @@ data class PaymentCalculationRequest(
 )
 
 data class PaymentCalculationResponse(
-    val calculationId: String,
-    val period: String,
-    val totalWorkers: Int,
+    val period: Period,
+    val questionId: Long,
+    val questionName: String?,
+    val workerPayments: List<WorkerPayment>,
     val summary: PaymentSummary,
-    val workerPayments: List<WorkerPayment>
+    val calculatedAt: LocalDateTime,
+    val calculatedBy: String
 )
 
 data class PaymentSummary(
+    val totalWorkers: Int,
+    val totalDaysWorked: Int?,
     val totalBasePay: BigDecimal,
     val totalBonuses: BigDecimal,
     val totalPayment: BigDecimal,
-    val breakdownByTier: Map<String, TierPayment>
+    val totalPayable: BigDecimal,
+    val breakdownByTier: Map<String, TierPayment>,
+    val flaggedWorkers: Int
 )
 
 data class TierPayment(
@@ -155,32 +161,35 @@ data class WorkerPayment(
     val bonusAmount: BigDecimal,
     val totalPayment: BigDecimal,
     val paymentTierBreakdown: Map<String, Int>,
-    val paymentStatus: String
+    val paymentStatus: String,
+    val qualityFlags: Int
 )
 
 data class PaymentApprovalRequest(
-    val calculationId: String?,
-    val workerPaymentIds: List<Long>,
+    val workerIds: List<String>,
+    val questionId: Long,
+    val startDate: String,
+    val endDate: String,
     val approvedBy: String,
-    val paymentReference: String? = null,
-    val notes: String? = null
+    val notes: String?
 )
 
 data class PaymentApprovalResponse(
-    val approvalId: String,
-    val totalApproved: Int,
+    val approvedCount: Int,
+    val approvedWorkers: List<String>,
+    val failedWorkers: List<String>,
     val totalAmount: BigDecimal,
-    val approvedAt: LocalDateTime,
     val approvedBy: String,
-    val nextSteps: List<String>
+    val approvedAt: LocalDateTime,
+    val exportId: Long?
 )
 
 data class PaymentSyncStatusRequest(
-    val paymentIds: List<Long>,
-    val status: String,
-    val paymentDate: String?,
-    val mpesaTransactionIds: List<String>? = null,
-    val processingNotes: String? = null
+    val exportId: Long,
+    val syncStatus: String,
+    val syncedRecords: Int?,
+    val failedRecords: Int?,
+    val errorMessage: String?
 )
 
 // Quality DTOs

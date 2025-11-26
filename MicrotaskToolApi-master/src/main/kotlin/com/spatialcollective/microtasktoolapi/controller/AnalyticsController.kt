@@ -30,8 +30,8 @@ class AnalyticsController(
             
             val response = DashboardResponse(
                 overview = DashboardOverview(
-                    activeQuestions = analytics["overview"] as? Map<String, Int>?.get("active_questions") ?: 0,
-                    activeWorkers = analytics["overview"] as? Map<String, Int>?.get("active_workers") ?: 0,
+                    activeQuestions = ((analytics["overview"] as? Map<*, *>)?.get("active_questions") as? Int) ?: 0,
+                    activeWorkers = ((analytics["overview"] as? Map<*, *>)?.get("active_workers") as? Int) ?: 0,
                     totalWorkersRegistered = null
                 ),
                 today = DailyStats(

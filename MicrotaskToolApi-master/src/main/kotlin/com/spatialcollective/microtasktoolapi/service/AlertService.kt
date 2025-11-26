@@ -55,8 +55,8 @@ class AlertService {
                 val mailMessage = SimpleMailMessage()
                 mailMessage.setFrom(fromEmail)
                 mailMessage.setTo(*toEmails.toTypedArray())
-                mailMessage.subject = "[" + priority + "] Microtasking Platform Alert: " + subject
-                mailMessage.text = """
+                mailMessage.setSubject("[" + priority + "] Microtasking Platform Alert: " + subject)
+                mailMessage.setText("""
                     |Alert Details:
                     |-------------
                     |Subject: $subject
@@ -69,7 +69,7 @@ class AlertService {
                     |---
                     |Microtasking Platform
                     |http://micro.spatialcollective.co.ke:8080
-                """.trimMargin()
+                """.trimMargin())
 
                 mailSender.send(mailMessage)
                 logger.info("Alert email sent successfully to: ${toEmails.joinToString()}")

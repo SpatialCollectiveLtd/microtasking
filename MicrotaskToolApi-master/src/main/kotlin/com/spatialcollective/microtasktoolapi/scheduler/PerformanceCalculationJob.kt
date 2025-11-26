@@ -69,7 +69,7 @@ class PerformanceCalculationJob {
             for (question in activeQuestions) {
                 try {
                     logger.debug("Calculating weekly payments for question ID: ${question.id}")
-                    paymentService.calculatePeriodPayments(question.id, startDate, endDate)
+                    paymentService.calculatePeriodPayments(startDate, endDate, question.id)
                     processedCount++
                 } catch (e: Exception) {
                     logger.error("Error calculating weekly payments for question ${question.id}", e)
